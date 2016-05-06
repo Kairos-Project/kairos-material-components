@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -20,6 +21,9 @@ public class DrawerLayout extends AnchorPane {
     private final SimpleBooleanProperty tableScreen = new SimpleBooleanProperty();
     private static final double DEFAULT_WIDTH_NAV = 256;
     private DrawerListener drawerListener;
+
+    private SimpleIntegerProperty responsiveWidth=new SimpleIntegerProperty(800);
+
     private final Pane toggleLayer = new Pane();
 
     private final static Duration DEFAULT_TIME_ANIM = new Duration(200);
@@ -47,7 +51,7 @@ public class DrawerLayout extends AnchorPane {
             }
         });
 
-        tableScreen.bind(widthProperty().lessThan(800));
+        tableScreen.bind(widthProperty().lessThan(responsiveWidth).or(responsiveWidth.isEqualTo(0)));
         tableScreen.addListener((observable, oldValue, newValue) -> {
             responsiveBehavior(newValue);
         });
@@ -145,5 +149,21 @@ public class DrawerLayout extends AnchorPane {
 
         public abstract void onDrawerOpened(Node node);
 
+    }
+
+    public void setResponsiveWidth(int responsiveWidth) {
+        this.responsiveWidth.setValue(responsiveWidth);
+    }
+
+    public int getResponsiveWidth() {
+        return responsiveWidth.getValue();
+    }
+
+    public void setForceNarrow(boolean forceNarrow){
+        responsiveWidth.setValue(forceNarrow?0:800);
+    }
+
+    public boolean isForceNarrow(){
+        return responsiveWidth.getValue()==0;
     }
 }
