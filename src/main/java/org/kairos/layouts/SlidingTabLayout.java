@@ -1,14 +1,14 @@
 package org.kairos.layouts;
 
-import com.sun.javafx.scene.control.skin.ButtonSkin;
+import com.sun.javafx.scene.control.skin.ToggleButtonSkin;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
@@ -63,11 +63,11 @@ public class SlidingTabLayout extends VBox {
         timeline.play();
     }
 
-    private class Tab extends Button {
+    private class Tab extends ToggleButton {
 
         @Override
         protected Skin<?> createDefaultSkin() {
-            SkinBase skin= new ButtonSkin(this);
+            SkinBase skin= new ToggleButtonSkin(this);
             RippleSkinFactory.getRippleEffect(skin, this);
             return super.createDefaultSkin();
         }
@@ -88,6 +88,7 @@ public class SlidingTabLayout extends VBox {
                         if(newValue.intValue()>0){
                             animatingBar(tab.getWidth(), getPadding().getLeft() + tab.getLayoutX());
                             tab.widthProperty().removeListener(this);
+                            tab.setSelected(false);
                         }
                     }
                 });
