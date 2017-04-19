@@ -19,17 +19,19 @@ import org.kairos.components.RippleSkinFactory;
  * Created by Felipe on 04/11/2015.
  */
 public class SlidingTabLayout extends VBox {
-    private final int DEFAULT_HEIGHT_BAR=3;
 
-    private final HBox tabStrip=new HBox();
+    private final int DEFAULT_HEIGHT_BAR = 3;
+
+    private final HBox tabStrip = new HBox();
     private ViewPager viewPager;
-    private Line bar=new Line();
-    public SlidingTabLayout(){
+    private Line bar = new Line();
+
+    public SlidingTabLayout() {
         getStyleClass().add("sliding-tab-layout");
         bar.setManaged(false);
         bar.getStyleClass().add("bar");
         bar.setStrokeWidth(DEFAULT_HEIGHT_BAR);
-        bar.layoutYProperty().bind(heightProperty().subtract(DEFAULT_HEIGHT_BAR-1.5));
+        bar.layoutYProperty().bind(heightProperty().subtract(DEFAULT_HEIGHT_BAR - 1.5));
         getChildren().add(tabStrip);
         getChildren().add(bar);
     }
@@ -41,24 +43,25 @@ public class SlidingTabLayout extends VBox {
     }
 
     private void populateStrip() {
-        PagerAdapter adapter=viewPager.getAdapter();
+        PagerAdapter adapter = viewPager.getAdapter();
 
-        for(int i=0;i<adapter.getCount();i++){
-            Tab tab= new Tab();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            Tab tab = new Tab();
             tab.setText(adapter.getPageTitle(i));
-            tab.setOnAction(evt->{
-                Tab tabPressed= (Tab) evt.getSource();
+            tab.setOnAction(evt -> {
+                Tab tabPressed = (Tab) evt.getSource();
                 viewPager.setCurrentItem(tabStrip.getChildren().indexOf(tabPressed));
+                toggleButtonState(tabStrip.getChildren().indexOf(tabPressed));
             });
             tabStrip.getChildren().add(tab);
         }
 
     }
-    
-    private void toggleButtonSate(int position) {
-        PagerAdapter adapter=viewPager.getAdapter();
 
-        for(int i=0;i<adapter.getCount();i++){
+    private void toggleButtonState(int position) {
+        PagerAdapter adapter = viewPager.getAdapter();
+
+        for (int i = 0; i < adapter.getCount(); i++) {
             Tab tab = (Tab) tabStrip.getChildren().get(i);
             if (i == position) {
                 tab.setSelected(true);
@@ -68,10 +71,10 @@ public class SlidingTabLayout extends VBox {
         }
     }
 
-    private void animatingBar(double width, double x){
-        Timeline timeline=new Timeline(new KeyFrame(new Duration(200),
-                new KeyValue(bar.endXProperty(),width),
-                new KeyValue(bar.layoutXProperty(),x)
+    private void animatingBar(double width, double x) {
+        Timeline timeline = new Timeline(new KeyFrame(new Duration(200),
+                new KeyValue(bar.endXProperty(), width),
+                new KeyValue(bar.layoutXProperty(), x)
         ));
         timeline.play();
     }
@@ -80,27 +83,26 @@ public class SlidingTabLayout extends VBox {
 
         @Override
         protected Skin<?> createDefaultSkin() {
-            SkinBase skin= new ToggleButtonSkin(this);
+            SkinBase skin = new ToggleButtonSkin(this);
             RippleSkinFactory.getRippleEffect(skin, this);
             return super.createDefaultSkin();
         }
 
     }
 
-    private class PagerListener implements ViewPager.OnPageChangeListener{
+    private class PagerListener implements ViewPager.OnPageChangeListener {
 
         @Override
         public void onPageSelected(int position) {
-            
-            toggleButtonSate(position);
+
             Tab tab = (Tab) tabStrip.getChildren().get(position);
-            if(tab.getWidth()>0) {
+            if (tab.getWidth() > 0) {
                 animatingBar(tab.getWidth(), getPadding().getLeft() + tab.getLayoutX());
-            }else{
+            } else {
                 tab.widthProperty().addListener(new ChangeListener<Number>() {
                     @Override
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        if(newValue.intValue()>0){
+                        if (newValue.intValue() > 0) {
                             animatingBar(tab.getWidth(), getPadding().getLeft() + tab.getLayoutX());
                             tab.widthProperty().removeListener(this);
                         }
