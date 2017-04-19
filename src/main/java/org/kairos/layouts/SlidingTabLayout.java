@@ -54,6 +54,19 @@ public class SlidingTabLayout extends VBox {
         }
 
     }
+    
+    private void toggleButtonSate(int position) {
+        PagerAdapter adapter=viewPager.getAdapter();
+
+        for(int i=0;i<adapter.getCount();i++){
+            Tab tab = (Tab) tabStrip.getChildren().get(i);
+            if (i == position) {
+                tab.setSelected(true);
+            } else {
+                tab.setSelected(false);
+            }
+        }
+    }
 
     private void animatingBar(double width, double x){
         Timeline timeline=new Timeline(new KeyFrame(new Duration(200),
@@ -78,6 +91,8 @@ public class SlidingTabLayout extends VBox {
 
         @Override
         public void onPageSelected(int position) {
+            
+            toggleButtonSate(position);
             Tab tab = (Tab) tabStrip.getChildren().get(position);
             if(tab.getWidth()>0) {
                 animatingBar(tab.getWidth(), getPadding().getLeft() + tab.getLayoutX());
@@ -88,7 +103,6 @@ public class SlidingTabLayout extends VBox {
                         if(newValue.intValue()>0){
                             animatingBar(tab.getWidth(), getPadding().getLeft() + tab.getLayoutX());
                             tab.widthProperty().removeListener(this);
-                            tab.setSelected(false);
                         }
                     }
                 });
