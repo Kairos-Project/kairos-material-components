@@ -432,7 +432,6 @@ and open the template in the editor.
     -fx-font-family:"Roboto";
 }
 
-.
 /**ScrollPane**/
 .scroll-pane {
     -fx-background-insets: 0;
@@ -561,7 +560,7 @@ text-area{
     -fx-padding:0 0 0 56;
 }
 
-.sliding-tab-layout .button{
+.sliding-tab-layout .toggle-button{
     -fx-font-size: 16;
     -fx-text-fill: #fff;
     -fx-padding: 16px;
@@ -570,7 +569,7 @@ text-area{
     -fx-font-family: 'Roboto Medium'
 }
 
-.sliding-tab-layout .button .ripple{
+.sliding-tab-layout .toggle-button .ripple{
      -fx-fill: -color-accent;
 }
 .sliding-tab-layout .bar{
