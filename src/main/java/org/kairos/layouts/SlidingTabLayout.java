@@ -53,6 +53,9 @@ public class SlidingTabLayout extends VBox {
                 viewPager.setCurrentItem(tabStrip.getChildren().indexOf(tabPressed));
                 toggleButtonState(tabStrip.getChildren().indexOf(tabPressed));
             });
+            if (i == 0) {
+                tab.setSelected(true);
+            }
             tabStrip.getChildren().add(tab);
         }
 
